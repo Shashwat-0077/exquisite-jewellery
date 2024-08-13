@@ -9,9 +9,18 @@
 # testing
 /coverage
 
+# Dummy
+dummy/
+
 # next.js
 /.next/
 /out/
+
+# VS code
+.vscode
+
+#drizzle
+drizzle/
 
 # production
 /build
@@ -34,3 +43,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+#local dbs
+local-db.*
