@@ -1,6 +1,13 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.scss";
+
+import { Inter } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import type { Metadata } from "next";
+
+import { QueryProvider } from "@/providers/queryProvider";
+
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,9 +21,22 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    // [ ] : Safe guard you api endpoints (for eg : ddos)
+
     return (
-        <html lang="en">
-            <body className={inter.className}>{children}</body>
+    <html lang="en">
+            <body className={inter.className}>
+                <SessionProvider>
+                    <QueryProvider>
+                        {children}
+                        {process.env.NODE_ENV === "development" ? (
+                            <ReactQueryDevtools initialIsOpen={false} />
+                        ) : (
+                            ""
+                        )}
+                    </QueryProvider>
+                </SessionProvider>
+            </body>
         </html>
     );
 }

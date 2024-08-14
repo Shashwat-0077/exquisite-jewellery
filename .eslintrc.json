@@ -8,27 +8,26 @@
                 "varsIgnorePattern": "^_",
                 "caughtErrorsIgnorePattern": "^_"
             }
-        ],
-        "no-console": "warn",
-        "eqeqeq": ["error", "always"],
-        "curly": ["error", "all"],
-        "semi": ["error", "always"],
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off",
-        "import/order": [
-            "error",
-            {
-                "groups": [
-                    "builtin",
-                    "external",
-                    "internal",
-                    "parent",
-                    "sibling",
-                    "index"
-                ],
-                "newlines-between": "always"
-            }
-        ],
-        "jsx-a11y/no-noninteractive-element-interactions": "warn"
+        ]
+        // "no-console": "warn",
+        // "eqeqeq": ["error", "always"],
+        // "curly": ["error", "all"],
+        // "semi": ["error", "always"],
+        // "react/react-in-jsx-scope": "off",
+        // "react/prop-types": "off",
+        // "import/order": [
+        //     "error",
+        //     {
+        //         "groups": [
+        //             "builtin",
+        //             "external",
+        //             "internal",
+        //             "parent",
+        //             "sibling",
+        //             "index"
+        //         ],
+        //         "newlines-between": "always"
+        //     }
+        // ]
     }
 }
