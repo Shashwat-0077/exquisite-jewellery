@@ -1,13 +1,13 @@
 "use client";
-
+import { useEffect } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { signIn } from "next-auth/react";
-
-import { useEffect } from "react";
-import { Toaster } from "./ui/toaster";
-import { DEFAULT_REDIRECT } from "@/routes";
 import { useSearchParams } from "next/navigation";
+
+import { DEFAULT_REDIRECT } from "@/routes";
 import { useToast } from "@/components/ui/use-toast";
+
+import { Toaster } from "./ui/toaster";
 
 export default function Socials() {
     const searchParams = useSearchParams();
@@ -15,9 +15,7 @@ export default function Socials() {
     const { toast } = useToast();
 
     useEffect(() => {
-        console.log("error : " + isCallbackError);
         if (isCallbackError) {
-            console.log("triggered toast");
             toast({
                 title: "Uh oh! Something went wrong.",
                 description: "There was a problem with your request.",

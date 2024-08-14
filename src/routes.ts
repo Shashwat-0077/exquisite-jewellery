@@ -1,4 +1,10 @@
-export const publicRoutes = ["/"];
+export const publicRoutes = [
+    "/",
+    // TODO : Remove below
+    "/api/categories",
+    "/api/products/insert-many",
+    "/api/orders/bulk",
+];
 export const authRoutes = [
     "/auth/login",
     "/auth/register",

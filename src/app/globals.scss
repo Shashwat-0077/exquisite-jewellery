@@ -1,3 +1,20 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+input[type="number"] {
+    // Remove the arrows for WebKit browsers (Chrome, Safari)
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0; // Optional: Remove default margin
+}
+
+// Hide the arrows in WebKit browsers
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; // Optional: Remove default margin
+}
+
+// keyframes
+@import "../keyframes/LikeButton.scss";

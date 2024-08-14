@@ -7,7 +7,9 @@ import { OrderInsertSchema } from "@/db/types";
 import { orders, ordersToProducts, products } from "@/db/schema";
 
 const app = new Hono()
-    .get("/", async (_c) => {})
+    .get("/", async (c) => {
+        c.json({ message: "Yet to implement" });
+    })
     .post("/", zValidator("form", OrderInsertSchema), (c) => {
         return c.json({ message: "Yet to implement" });
     })

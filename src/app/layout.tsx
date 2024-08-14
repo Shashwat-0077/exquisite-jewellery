@@ -6,8 +6,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
 
 import { QueryProvider } from "@/providers/queryProvider";
-
-
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/ui/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,16 +24,18 @@ export default function RootLayout({
     // [ ] : Safe guard you api endpoints (for eg : ddos)
 
     return (
-    <html lang="en">
+        <html lang="en">
             <body className={inter.className}>
                 <SessionProvider>
                     <QueryProvider>
+                        <Navbar />
                         {children}
                         {process.env.NODE_ENV === "development" ? (
                             <ReactQueryDevtools initialIsOpen={false} />
                         ) : (
                             ""
                         )}
+                        <Footer />
                     </QueryProvider>
                 </SessionProvider>
             </body>
