@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useMedia } from "react-use";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Heart, Loader2, Search, ShoppingCart, UserRound } from "lucide-react";
 
@@ -183,17 +183,12 @@ export default function Navbar() {
                                             My Account
                                         </DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem>
-                                            Profile
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                            Billing
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                            Team
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                            Subscription
+                                        <DropdownMenuItem
+                                            onClick={() => {
+                                                signOut();
+                                            }}
+                                        >
+                                            Sing Out
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>

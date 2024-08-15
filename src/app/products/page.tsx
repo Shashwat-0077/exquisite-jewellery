@@ -41,12 +41,11 @@ export default async function Store({
             },
         ],
         queryFn: async () => {
-            const data = getProductsByFilters({
+            const data = await getProductsByFilters({
                 filterMaxPrice: parsedMaxPrice,
                 filterMinPrice: parsedMinPrice,
                 filterCategories: parsedCategory,
             });
-            // console.log(data); // Debugging log
             return data;
         },
     });
