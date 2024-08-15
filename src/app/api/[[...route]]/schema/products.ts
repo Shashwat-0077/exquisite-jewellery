@@ -26,4 +26,6 @@ export const GetByQuerySchema = z.object({
         .string()
         .transform<string[]>((val) => JSON.parse(val))
         .optional(),
+    limit: z.number().optional(),
+    random: z.boolean().optional(),
 });

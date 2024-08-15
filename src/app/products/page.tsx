@@ -1,4 +1,3 @@
-import { and, eq, gte, inArray, lte, sql } from "drizzle-orm";
 import {
     dehydrate,
     HydrationBoundary,
@@ -7,17 +6,13 @@ import {
 
 import ProductsSection from "@/components/store/ProductsSection";
 import Filters from "@/components/store/filters";
-import { db } from "@/db/drizzle";
-import { categories, products } from "@/db/schema";
+import { getProductsByFilters } from "@/services/products";
 
 export default async function Store({
     searchParams,
 }: {
     searchParams: { min: string; max: string; categories: string };
 }) {
-    // TODO : The backend server is not being used as much by the client and server components maybe drop the server get requests all together ??
-    //  OR MAYBE
-    // We can use fetch function that nextjs provides
     const {
         min: filterMinPrice,
         max: filterMaxPrice,
@@ -46,59 +41,17 @@ export default async function Store({
             },
         ],
         queryFn: async () => {
-            const [minPriceResult, maxPriceResult, categoriesResult] =
-                await Promise.all([
-                    !parsedMinPrice
-                        ? db
-                              .select({
-                                  value: sql<number>`MIN(${products.price})`,
-                              })
-                              .from(products)
-                        : Promise.resolve([{ value: NaN }]),
-                    !parsedMaxPrice
-                        ? db
-                              .select({
-                                  value: sql<number>`MAX(${products.price})`,
-                              })
-                              .from(products)
-                        : Promise.resolve([{ value: NaN }]),
-                    !parsedCategory || parsedCategory.length === 0
-                        ? db.select({ name: categories.name }).from(categories)
-                        : Promise.resolve([]),
-                ]);
-
-            const minPrice = parsedMinPrice ?? minPriceResult[0].value;
-            const maxPrice = parsedMaxPrice ?? maxPriceResult[0].value;
-            const cats =
-                parsedCategory && parsedCategory.length > 0
-                    ? parsedCategory
-                    : categoriesResult.map((val) => val.name);
-
-            const data = await db
-                .select({
-                    ID: products.ID,
-                    title: products.title,
-                    description: products.description,
-                    image: products.image,
-                    price: products.price,
-                    categoryName: categories.name,
-                })
-                .from(products)
-                .innerJoin(categories, eq(products.category, categories.ID))
-                .where(
-                    and(
-                        gte(products.price, minPrice),
-                        lte(products.price, maxPrice),
-                        inArray(categories.name, cats)
-                    )
-                );
+            const data = getProductsByFilters({
+                filterMaxPrice: parsedMaxPrice,
+                filterMinPrice: parsedMinPrice,
+                filterCategories: parsedCategory,
+            });
             // console.log(data); // Debugging log
             return data;
         },
     });
 
     const dehydratedState = dehydrate(queryClient);
-    // console.log("Dehydrated state:", dehydratedState); // Debugging log
 
     return (
         <div className="mt-10 flex min-h-[calc(100svh-80px)] px-7 lg:gap-10">

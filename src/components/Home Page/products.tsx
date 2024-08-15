@@ -1,9 +1,12 @@
-import SwiperCarousel from "@/components/ui/SwiperCarousel";
-import { db } from "@/db/drizzle";
-import { products } from "@/db/schema";
+// import SwiperCarousel from "@/components/ui/SwiperCarousel";
+
+import { getProductsByFilters } from "@/services/products";
+
+import SwiperCarousel from "../ui/SwiperCarousel";
 
 export default async function Products() {
-    const data = await db.select().from(products);
+    // TODO : make different data for both sliders
+    const data = await getProductsByFilters({ filterLimit: 7, random: true });
 
     return (
         <section className="mb-40 flex flex-col items-center justify-center gap-5 px-10 sm:px-20 lg:px-40">

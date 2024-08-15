@@ -8,6 +8,8 @@ import { client } from "@/lib/hono";
 import ProductCard from "../ui/ProductCard";
 
 export default function ProductsSection() {
+    // TODO : Add a functionality to add offset for the image while adding the image to the db so that the admin can choose how the picture will look in the page
+
     const searchParams = useSearchParams();
     const filterMin = searchParams.get("min");
     const filterMax = searchParams.get("max");
@@ -30,11 +32,9 @@ export default function ProductsSection() {
                     categories: filterCategories ?? undefined,
                 },
             });
-
             if (!response.ok) {
                 throw new Error("Failed to fetch products");
             }
-
             const { data } = await response.json();
             return data;
         },
@@ -49,6 +49,8 @@ export default function ProductsSection() {
 
     return (
         <div className="grid w-full grid-cols-2 gap-x-9 gap-y-12 lg:grid-cols-3">
+            {/* TODO : add a np product found template */}
+            {data?.length === 0 ? "No products found" : ""}
             {data?.map((product, index) => (
                 <ProductCard
                     key={index}

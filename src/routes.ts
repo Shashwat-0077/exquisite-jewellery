@@ -4,6 +4,7 @@ export const publicRoutes = [
     "/api/categories",
     "/api/products/insert-many",
     "/api/orders/bulk",
+    "/api/products",
 ];
 export const authRoutes = [
     "/auth/login",
