@@ -13,7 +13,7 @@ export type Coupons = {
     discountAmount: number;
 };
 
-export const coupons: Coupons[] = [
+const coupons: Coupons[] = [
     {
         col_id: "728ed52f",
         code: "15",
