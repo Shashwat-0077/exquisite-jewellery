@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 
 import { QueryProvider } from "@/providers/queryProvider";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/ui/Footer";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 

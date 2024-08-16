@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useMedia } from "react-use";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Heart, Loader2, Search, ShoppingCart, UserRound } from "lucide-react";
@@ -23,11 +23,13 @@ import {
 import NavItemsSheet from "./NavItemsSheet";
 import SideCart from "./SideCart";
 
+const hiddenOnPathNames = ["/checkout"];
+const adminRoute = "/admin";
+
 export default function Navbar() {
-    //TODO : Make use of auth to chang the use icon
     // TODO : close the sheet when we redirect
-    // TODO : Implement a hook for screen resize
     const router = useRouter();
+    const pathName = usePathname();
 
     const { data, status } = useSession();
 
@@ -58,7 +60,10 @@ export default function Navbar() {
         };
     });
 
-    return (
+    return hiddenOnPathNames.includes(pathName) ||
+        pathName.startsWith(adminRoute) ? (
+        <></>
+    ) : (
         <nav
             className={`sticky left-0 top-0 z-50 flex items-center justify-between bg-primary px-14 py-2 ${
                 !isVisible ? "-translate-y-full" : ""

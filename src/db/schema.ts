@@ -7,14 +7,15 @@ import {
 } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 
-
 export const users = sqliteTable("user", {
     id: text("id").primaryKey(),
     name: text("name"),
     email: text("email").unique(),
     emailVerified: text("emailVerified"),
     image: text("image"),
+    role: text("role", { enum: ["ADMIN", "USER"] }).default("USER"),
 });
+export type UserRoleType = "ADMIN" | "USER";
 export const userRelations = relations(users, ({ many }) => ({
     accounts: many(account),
 }));
@@ -40,7 +41,7 @@ export const account = sqliteTable(
         compoundKey: primaryKey({
             columns: [account.provider, account.providerAccountId],
         }),
-    }),
+    })
 );
 export const accountRelations = relations(account, ({ one }) => ({
     user: one(users, {
@@ -48,7 +49,6 @@ export const accountRelations = relations(account, ({ one }) => ({
         references: [users.id],
     }),
 }));
-
 
 export const products = sqliteTable("products", {
     ID: text("id")
@@ -59,24 +59,14 @@ export const products = sqliteTable("products", {
     price: integer("price").notNull(),
     image: text("image").notNull(),
     category: integer("category")
-        .references(() => categories.ID)
-        .notNull(),
+        .notNull()
+        .references(() => categories.ID),
 });
-export const productsRelations = relations(products, ({ one, many }) => ({
-    ordersToProducts: many(ordersToProducts),
-    category: one(categories, {
-        fields: [products.category],
-        references: [categories.ID],
-    }),
-}));
 
 export const categories = sqliteTable("categories", {
     ID: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     name: text("name").notNull(),
 });
-export const categoryRelations = relations(categories, ({ many }) => ({
-    products: many(products),
-}));
 
 export const orders = sqliteTable("orders", {
     ID: text("id")
@@ -94,10 +84,10 @@ export const orders = sqliteTable("orders", {
         .default(sql`CURRENT_TIMESTAMP`)
         .notNull(),
     phoneNumber: text("phone_number").notNull(),
+    discountCodeID: text("discount_code_id").references(() => Coupons.ID, {
+        onDelete: "restrict",
+    }),
 });
-export const ordersRelations = relations(orders, ({ many }) => ({
-    ordersToProducts: many(ordersToProducts),
-}));
 
 export const ordersToProducts = sqliteTable(
     "orders_to_products",
@@ -114,16 +104,34 @@ export const ordersToProducts = sqliteTable(
     })
 );
 
-export const OrderToProductRelations = relations(
-    ordersToProducts,
-    ({ one }) => ({
-        orders: one(orders, {
-            fields: [ordersToProducts.orderID],
-            references: [orders.ID],
-        }),
-        products: one(products, {
-            fields: [ordersToProducts.productID],
-            references: [products.ID],
-        }),
+export const Coupons = sqliteTable("coupons", {
+    ID: text("id")
+        .primaryKey()
+        .$defaultFn(() => uuid()),
+    code: text("code").unique().notNull(),
+    discountAmount: integer("discount_amount").notNull(),
+    uses: integer("uses").default(0),
+    isActive: integer("is_active", { mode: "boolean" }).default(true),
+    allProducts: integer("all_products", { mode: "boolean" }).default(false),
+    createdAt: text("created_at")
+        .default(sql`CURRENT_TIMESTAMP`)
+        .notNull(),
+    expiresAt: text("expires_at"),
+    discountType: text("discount_type", { enum: ["FIXED", "PERCENTAGE"] }),
+});
+export type CouponType = "FIXED" | "PERCENTAGE";
+
+export const CouponsToProducts = sqliteTable(
+    "coupons_to_products",
+    {
+        couponID: text("coupon_ID")
+            .notNull()
+            .references(() => Coupons.ID),
+        productID: text("product_ID")
+            .notNull()
+            .references(() => products.ID),
+    },
+    (table) => ({
+        pk: primaryKey({ columns: [table.couponID, table.productID] }),
     })
 );

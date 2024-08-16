@@ -1,0 +1,48 @@
+.s {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    stroke: black;
+    fill: transparent;
+    animation: MakeFullS 4s 500ms linear forwards;
+}
+
+.g {
+    stroke-dasharray: 735;
+    stroke-dashoffset: 735;
+    stroke: black;
+    fill: transparent;
+    animation: MakeFullG 4s 500ms linear forwards;
+}
+
+
+@keyframes MakeFullS {
+    0% {
+        stroke-dashoffset: 600;
+    }
+
+    75% {
+        stroke-dashoffset: 0;
+        fill: transparent;
+    }
+
+    100% {
+        fill: black;
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes MakeFullG {
+    0% {
+        stroke-dashoffset: 735;
+    }
+
+    75% {
+        stroke-dashoffset: 0;
+        fill: transparent;
+    }
+
+    100% {
+        fill: black;
+        stroke-dashoffset: 0;
+    }
+}

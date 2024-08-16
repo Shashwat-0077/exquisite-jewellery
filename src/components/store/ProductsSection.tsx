@@ -10,6 +10,8 @@ import ProductCard from "../ui/ProductCard";
 export default function ProductsSection() {
     // TODO : Add a functionality to add offset for the image while adding the image to the db so that the admin can choose how the picture will look in the page
 
+    // BUG : Bracelets are not rendered in production build
+
     const searchParams = useSearchParams();
     const filterMin = searchParams.get("min");
     const filterMax = searchParams.get("max");

@@ -1,5 +1,4 @@
 import NextAuth from "next-auth";
-import { NextResponse } from "next/server";
 
 import authConfig from "./auth.config";
 import {
@@ -37,15 +36,7 @@ export default auth((req) => {
         return Response.redirect(UrlWithCallBack);
     }
 
-    const requestHeaders = new Headers(req.headers);
-    requestHeaders.set("x-url", req.url);
-
-    return NextResponse.next({
-        request: {
-            // Apply new request headers
-            headers: requestHeaders,
-        },
-    });
+    return;
 });
 
 export const config = {
