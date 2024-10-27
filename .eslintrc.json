@@ -1,3 +1,167 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+    "extends": [
+        "next/core-web-vitals",
+        "next/typescript"
+    ],
+    "plugins": [
+        "boundaries"
+    ],
+    "settings": {
+        "boundaries/include": [
+            "src/**/*"
+        ],
+        "boundaries/elements": [
+            {
+                "mode": "full",
+                "type": "shared",
+                "pattern": [
+                    "src/components/**/*",
+                    "src/data/**/*",
+                    "src/drizzle/**/*",
+                    "src/hooks/**/*",
+                    "src/lib/**/*",
+                    "src/server/**/*",
+                    "src/providers/**/*"
+                ]
+            },
+            {
+                "mode": "full",
+                "type": "feature",
+                "capture": [
+                    "featureName"
+                ],
+                "pattern": [
+                    "src/features/*/**/*"
+                ]
+            },
+            {
+                "mode": "full",
+                "type": "app",
+                "capture": [
+                    "_",
+                    "fileName"
+                ],
+                "pattern": [
+                    "src/app/**/*"
+                ]
+            },
+            {
+                "mode": "full",
+                "type": "neverImport",
+                "pattern": [
+                    "src/*",
+                    "src/tasks/**/*"
+                ]
+            }
+        ]
+    },
+    "rules": {
+        "no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^unwanted_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^unwanted_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        "no-console": "warn",
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
+        "curly": [
+            "error",
+            "all"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+        "import/order": [
+            "error",
+            {
+                "groups": [
+                    "builtin",
+                    "external",
+                    "internal",
+                    "parent",
+                    "sibling",
+                    "index"
+                ],
+                "newlines-between": "always"
+            }
+        ],
+        "boundaries/no-unknown": [
+            "error"
+        ],
+        "boundaries/no-unknown-files": [
+            "error"
+        ],
+        "boundaries/element-types": [
+            "error",
+            {
+                "default": "disallow",
+                "rules": [
+                    {
+                        "from": [
+                            "shared"
+                        ],
+                        "allow": [
+                            "shared"
+                        ]
+                    },
+                    {
+                        "from": [
+                            "feature"
+                        ],
+                        "allow": [
+                            "shared",
+                            [
+                                "feature",
+                                {
+                                    "featureName": "${from.featureName}"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "from": [
+                            "app",
+                            "neverImport"
+                        ],
+                        "allow": [
+                            "shared",
+                            "feature"
+                        ]
+                    },
+                    {
+                        "from": [
+                            "app"
+                        ],
+                        "allow": [
+                            [
+                                "app",
+                                {
+                                    "fileName": [
+                                        "*.css",
+                                        "*.scss"
+                                    ]
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
 }
