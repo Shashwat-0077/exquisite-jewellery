@@ -19,68 +19,35 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { loginSchema } from "@/features/auth/schemas";
 
-const formSchema = z.object({
-    name: z.string().trim().min(1, "Name is required"),
-    email: z
-        .string()
-        .trim()
-        .min(1, "Email is required")
-        .email({ message: "Invalid email address" }),
-    password: z
-        .string()
-        .min(8, { message: "Password must be at least 8 characters long" }),
-});
+import { useLogin } from "../api/use-login";
 
 // TODO : Styles correction
-export function SignUpCard() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+export function SignInCard() {
+    const { mutate } = useLogin();
+
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
-            name: "",
             email: "",
             password: "",
         },
     });
 
-    const onSubmit = form.handleSubmit((data: z.infer<typeof formSchema>) => {
-        console.log(data);
+    const onSubmit = form.handleSubmit((data: z.infer<typeof loginSchema>) => {
+        mutate({ json: data });
     });
 
     return (
         <Card className="mx-auto max-w-md p-6">
             <CardHeader>
                 <CardTitle className="mb-4 text-center text-2xl font-bold">
-                    Welcome !!!!
+                    Welcome Back
                 </CardTitle>
             </CardHeader>
             <Form {...form}>
                 <form onSubmit={onSubmit}>
-                    <div className="mb-4">
-                        <FormLabel
-                            className="mb-1 block text-sm font-medium"
-                            htmlFor="name"
-                        >
-                            Name
-                        </FormLabel>
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            id="name"
-                                            className={`w-full rounded border px-3 py-2 ${form.formState.errors.name ? "border-red-500" : ""}`}
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
                     <div className="mb-4">
                         <FormLabel
                             className="mb-1 block text-sm font-medium"
@@ -135,23 +102,23 @@ export function SignUpCard() {
                         type="submit"
                         className="w-full rounded py-2 text-white"
                     >
-                        Sign up
+                        Sign In
                     </Button>
                     <div className="mt-4 flex justify-between">
                         <Button className="mr-2 w-full rounded py-2 text-white">
-                            <FcGoogle /> Sign up with Google
+                            <FcGoogle /> Sign in with Google
                         </Button>
                         <Button className="ml-2 w-full rounded bg-black py-2 text-white">
                             <ImAppleinc />
-                            Sign up with Apple
+                            Sign in with Apple
                         </Button>
                     </div>
                 </form>
             </Form>
             <div className="mt-4 text-center text-sm">
-                <span>Already have an account?&nbsp;</span>
-                <Link href="/sign-in" className="text-blue-500 hover:underline">
-                    Sign in
+                <span>Don&apos;t have an account?&nbsp;</span>
+                <Link href="/sign-up" className="text-blue-500 hover:underline">
+                    Create one
                 </Link>
             </div>
         </Card>
