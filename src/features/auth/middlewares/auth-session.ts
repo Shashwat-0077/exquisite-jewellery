@@ -14,9 +14,8 @@ import {
     type Users as UsersType,
 } from "node-appwrite";
 
-import { AUTH_COOKIE } from "@/features/auth/constants"; // eslint-disable-line
-
-import { env } from "./env";
+import { AUTH_COOKIE } from "@/features/auth/constants";
+import { env } from "@/lib/env";
 
 type AuthContext = {
     Variables: {

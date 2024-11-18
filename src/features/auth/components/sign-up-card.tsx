@@ -6,6 +6,8 @@ import { ImAppleinc } from "react-icons/im";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useMedia } from "react-use";
+import { Loader2 } from "lucide-react";
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,7 +27,8 @@ import { useRegister } from "../api/use-register";
 
 // TODO : Styles correction
 export function SignUpCard() {
-    const { mutate } = useRegister();
+    const { mutate, isPending } = useRegister();
+    const isMobile = useMedia("(max-width: 640px)", false);
 
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
@@ -68,6 +71,7 @@ export function SignUpCard() {
                                             type="text"
                                             id="name"
                                             className={`w-full rounded border px-3 py-2 ${form.formState.errors.name ? "border-red-500" : ""}`}
+                                            disabled={isPending}
                                             {...field}
                                         />
                                     </FormControl>
@@ -93,6 +97,7 @@ export function SignUpCard() {
                                             type="email"
                                             id="email"
                                             className={`w-full rounded border px-3 py-2 ${form.formState.errors.email ? "border-red-500" : ""}`}
+                                            disabled={isPending}
                                             {...field}
                                         />
                                     </FormControl>
@@ -118,6 +123,7 @@ export function SignUpCard() {
                                             type="password"
                                             id="password"
                                             className={`w-full rounded border ${form.formState.errors.password ? "border-red-500" : ""}`}
+                                            disabled={isPending}
                                             {...field}
                                         />
                                     </FormControl>
@@ -126,19 +132,31 @@ export function SignUpCard() {
                             )}
                         />
                     </div>
-                    <Button
-                        type="submit"
-                        className="w-full rounded py-2 text-white"
-                    >
-                        Sign up
-                    </Button>
-                    <div className="mt-4 flex justify-between">
-                        <Button className="mr-2 w-full rounded py-2 text-white">
-                            <FcGoogle /> Sign up with Google
+                    {!isPending ? (
+                        <Button
+                            type="submit"
+                            className="w-full rounded py-2 text-white"
+                        >
+                            Sign Up
                         </Button>
-                        <Button className="ml-2 w-full rounded bg-black py-2 text-white">
+                    ) : (
+                        <Loader2 className="size-4 animate-spin" />
+                    )}
+                    <div className="mt-4 flex justify-between gap-3">
+                        <Button
+                            className="w-full rounded px-8 py-2 text-white sm:px-4"
+                            disabled={isPending}
+                        >
+                            <FcGoogle /> {!isMobile ? "Sign up with " : ""}
+                            Google
+                        </Button>
+                        <Button
+                            className="w-full rounded bg-black px-8 py-2 text-white sm:px-4"
+                            disabled={isPending}
+                        >
                             <ImAppleinc />
-                            Sign up with Apple
+                            {!isMobile ? "Sign up with " : ""}
+                            Apple
                         </Button>
                     </div>
                 </form>

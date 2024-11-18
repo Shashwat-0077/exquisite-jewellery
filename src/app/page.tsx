@@ -1,34 +1,15 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { getCurrent } from "@/features/auth/actions";
+import UserButton from "@/features/auth/components/userButton";
 
-import { useCurrent } from "@/features/auth/api/use-current";
-import { useLogout } from "@/features/auth/api/use-logout";
-import { Button } from "@/components/ui/button";
+export default async function Home() {
+    const user = await getCurrent();
 
-export default function Home() {
-    const router = useRouter();
-    const { data, isLoading } = useCurrent();
-    const { mutate } = useLogout();
+    if (!user) {
+        redirect("/sign-in");
+    }
 
-    // HACK : This is a hack to redirect to the login page if the user is not logged in
-    useEffect(() => {
-        if (!data && !isLoading) {
-            router.push("/sign-in");
-        }
-    }, [data, isLoading]);
-
-    return (
-        <h1>
-            Only visible to authorized users
-            <Button
-                onClick={() => {
-                    mutate({});
-                }}
-            >
-                Logout
-            </Button>
-        </h1>
-    );
+    // FIXME : page is getting reloaded and the "/me" route is getting hit thrice, once with above getCurrent() and then with the UserButton and then with the UserButton again, so we need to fix this.
+    return <UserButton />;
 }

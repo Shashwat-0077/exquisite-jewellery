@@ -6,7 +6,6 @@ const clientEnvSchema = z.object({
     NEXT_PUBLIC_APP_URL: z.string().url(),
     NEXT_PUBLIC_APPWRITE_ENDPOINT: z.string().url(),
     NEXT_PUBLIC_APPWRITE_PROJECT: z.string(),
-    NEXT_PUBLIC_APPWRITE_DATABASE_ID: z.string(),
 });
 
 // Parse and validate client environment variables
@@ -15,8 +14,6 @@ const parsedClientEnv = clientEnvSchema.safeParse({
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_APPWRITE_ENDPOINT: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
     NEXT_PUBLIC_APPWRITE_PROJECT: process.env.NEXT_PUBLIC_APPWRITE_PROJECT,
-    NEXT_PUBLIC_APPWRITE_DATABASE_ID:
-        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
 });
 
 // Handle validation errors with detailed messages

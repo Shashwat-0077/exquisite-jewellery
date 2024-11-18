@@ -6,6 +6,8 @@ import { ImAppleinc } from "react-icons/im";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { useMedia } from "react-use";
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,7 +27,8 @@ import { useLogin } from "../api/use-login";
 
 // TODO : Styles correction
 export function SignInCard() {
-    const { mutate } = useLogin();
+    const { mutate, isPending } = useLogin();
+    const isMobile = useMedia("(max-width: 640px)", false);
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -40,7 +43,7 @@ export function SignInCard() {
     });
 
     return (
-        <Card className="mx-auto max-w-md p-6">
+        <Card className="mx-4 max-w-md p-6 sm:mx-auto">
             <CardHeader>
                 <CardTitle className="mb-4 text-center text-2xl font-bold">
                     Welcome Back
@@ -65,6 +68,7 @@ export function SignInCard() {
                                             type="email"
                                             id="email"
                                             className={`w-full rounded border px-3 py-2 ${form.formState.errors.email ? "border-red-500" : ""}`}
+                                            disabled={isPending}
                                             {...field}
                                         />
                                     </FormControl>
@@ -90,6 +94,7 @@ export function SignInCard() {
                                             type="password"
                                             id="password"
                                             className={`w-full rounded border ${form.formState.errors.password ? "border-red-500" : ""}`}
+                                            disabled={isPending}
                                             {...field}
                                         />
                                     </FormControl>
@@ -98,19 +103,34 @@ export function SignInCard() {
                             )}
                         />
                     </div>
-                    <Button
-                        type="submit"
-                        className="w-full rounded py-2 text-white"
-                    >
-                        Sign In
-                    </Button>
-                    <div className="mt-4 flex justify-between">
-                        <Button className="mr-2 w-full rounded py-2 text-white">
-                            <FcGoogle /> Sign in with Google
+                    {/* 
+                        // TODO : make the animation of the button so that when the query is pending the button shrinks to the loader then starts spinning
+                    */}
+                    {!isPending ? (
+                        <Button
+                            type="submit"
+                            className="w-full rounded py-2 text-white"
+                        >
+                            Sign In
                         </Button>
-                        <Button className="ml-2 w-full rounded bg-black py-2 text-white">
+                    ) : (
+                        <Loader2 className="size-4 animate-spin" />
+                    )}
+                    <div className="mt-4 flex justify-between gap-3">
+                        <Button
+                            className="w-full rounded px-8 py-2 text-white sm:px-4"
+                            disabled={isPending}
+                        >
+                            <FcGoogle /> {!isMobile ? "Sign in with " : ""}
+                            Google
+                        </Button>
+                        <Button
+                            className="w-full rounded bg-black px-8 py-2 text-white sm:px-4"
+                            disabled={isPending}
+                        >
                             <ImAppleinc />
-                            Sign in with Apple
+                            {!isMobile ? "Sign in with " : ""}
+                            Apple
                         </Button>
                     </div>
                 </form>
